@@ -1,0 +1,37 @@
+<div class="search-bar w3layouts-newsletter">
+    <h3 class="sear-head editContent">Поиск фильмов</h3>
+    <form action="{% url 'search' %}" method="get" class="d-flex editContent">
+        <input type="search" placeholder="Введите название..." name="q" class="form-control" required="">
+        <button type="submit" class="btn1 btn">
+            <span class="fa fa-seacrh" aria-hidden="true"></span>
+        </button>
+    </form>
+</div>
+
+<form action="{% url 'filter' %}" method="get">
+    <div class="sidebar-block">
+        <h5>Жанры</h5>
+        <ul>
+            {% for genre in view.get_genres %}
+                <li>
+                    <input type="checkbox" class="checked" name="genre" value="{{genre.id}}">
+                    <span>{{genre.name}}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="sidebar-block">
+        <h5>Год</h5>
+        <ul>
+            {% for movie in view.get_years %}
+                <li>
+                    <input type="checkbox" class="checked" name="year" value="{{movie.year}}">
+                    <span>{{movie.year}}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <button type="submit">Найти</button>
+</form>
+

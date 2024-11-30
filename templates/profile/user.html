@@ -1,0 +1,19 @@
+{% extends 'profile/base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <div class="login">
+        <h1>Личный кабинет</h1>
+            <div>
+                Login: {{user.username}}
+            </div>
+            <div>
+                Email: {{user.email}}
+            </div>
+        </div>
+    {% else %}
+        <div class="warning">
+            Для входа в личный кабинет необходимо <a href="{% url 'account_login' %}">авторизоваться</a>
+        </div>
+    {% endif %}
+ {% endblock content %}
