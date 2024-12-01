@@ -5,3 +5,4 @@ psycopg2~=2.9.10
 django-ckeditor~=6.7.1
 django-allauth~=65.2.0
 requests~=2.32.3
+python-dotenv~=1.0.1

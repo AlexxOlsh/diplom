@@ -40,11 +40,12 @@ class MovieDetailView(GenreYear, DetailView):
         user = self.request.user
         movie = kwargs.get('object')
 
-        favorite_list, created = Favorites.objects.get_or_create(user=user.id)
-        if favorite_list.movies.filter(id=movie.pk).exists():
-            context['is_favourite'] = True
-        else:
-            context['is_favourite'] = False
+        if user.id:
+            favorite_list, created = Favorites.objects.get_or_create(user=user.id)
+            if favorite_list.movies.filter(id=movie.pk).exists():
+                context['is_favourite'] = True
+            else:
+                context['is_favourite'] = False
         return context
 
 
@@ -63,10 +64,25 @@ class MainMoviesView(ListView):
 class FilterMoviesView(GenreYear, ListView):
     """Фильтрация фильмов"""
     def get_queryset(self):
-        queryset = Movie.objects.filter(
-            Q(year__in=self.request.GET.getlist("year")) |
-            Q(genres__in=self.request.GET.getlist("genre"))
-        )
+        if self.request.GET.getlist("year"):
+            if self.request.GET.getlist("genre"):
+                queryset = Movie.objects.filter(
+                    Q(year__in=self.request.GET.getlist("year")) &
+                    Q(genres__in=self.request.GET.getlist("genre")) &
+                    Q(draft = False)
+                ).distinct()
+            else:
+                queryset = Movie.objects.filter(
+                    Q(year__in=self.request.GET.getlist("year"))&
+                    Q(draft=False)
+                ).distinct()
+        else:
+            if self.request.GET.getlist("genre"):
+                queryset = Movie.objects.filter(
+                    Q(genres__in=self.request.GET.getlist("genre"))&
+                    Q(draft=False)
+                ).distinct()
+
         return queryset
 
 
@@ -138,6 +154,7 @@ class FavoritesListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        favorite_list, created = Favorites.objects.get_or_create(user=user.id)
+
+        favorite_list, created = Favorites.objects.get_or_create(user=user)
         context["favourite_movies"] = favorite_list.movies.all()
         return context

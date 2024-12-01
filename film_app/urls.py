@@ -29,8 +29,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # path('', )
     path("", include("movies.urls")),
-    path("profile/", TemplateView.as_view(template_name="profile/user.html")),
-    path("profile/favourites/", views.FavoritesListView.as_view(template_name="profile/favourites_list.html")),
+    path("profile/", TemplateView.as_view(template_name="profile/user.html"), name="profile"),
+    path("profile/favourites/", views.FavoritesListView.as_view(template_name="profile/favourites_list.html"), name="favorite"),
 ]
 
 if settings.DEBUG:

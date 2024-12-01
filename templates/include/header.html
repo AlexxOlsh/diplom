@@ -21,9 +21,16 @@
                 <nav class="menu">
                     <ul>
                         <li><a href="/movies/">Фильмы</a></li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'profile' %}">{{user.username}}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'favorite' %}">Избранное</a>
+                            </li>
+                        {% endif %}
                         <li>
                             {% if user.is_authenticated %}
-                                <span>{{user.username}}</span>
                                 <a href="{% url 'account_logout' %}">Выход</a>
                             {% else %}
                                 <a href="{% url 'account_login' %}">Вход</a>

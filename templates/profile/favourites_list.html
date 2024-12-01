@@ -1,22 +1,29 @@
 {% extends 'profile/base.html' %}
 {% block content %}
-
-    {% if user.is_authenticated %}
-
-
-           {% for movie in favourite_movies %}
-                <div class="col-4">
-                    <div class="card">
-                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="{{ movie.url }}/">{{ movie.title }}</a></h5>
-    <!--                    <p class="card-text">{{ movie.description|truncatechars:250 }}</p>-->
-                            <div>{{ movie.rating|floatformat:1 }}</div>
-                            <div>{{movie.genres.all|join:", "}}</div>
-                            <div>{{ movie.year }}</div>
+    <div class="container">
+        <div class="row">
+            <h1>Избранное</h1>
+            {% if user.is_authenticated %}
+                {% if favourite_movies %}
+                   {% for movie in favourite_movies %}
+                        <div class="col-4">
+                            <div class="card">
+                                <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="/movies/{{ movie.url }}/">{{ movie.title }}</a></h5>
+                                    <div>{{ movie.rating|floatformat:1 }}</div>
+                                    <div>{{movie.genres.all|join:", "}}</div>
+                                    <div>{{ movie.year }}</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            {% endfor %}
-    {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>У вас пока нет любимых фильмов</p>
+                {% endif %}
+            {% else %}
+                <p>Вам необходимо авторизоваться</p>
+            {% endif %}
+        </div>
+    </div>
  {% endblock content %}
