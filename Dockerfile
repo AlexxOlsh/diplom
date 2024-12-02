@@ -1,12 +1,14 @@
 FROM python:3.12-slim
 
-RUN apt-get update
+WORKDIR /usr/src/app
 
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
 
-COPY . /app/
+COPY ./req.txt /usr/src/app/
 
-CMD ["bash", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
+RUN pip install -r req.txt
+
+COPY . /usr/src/app/

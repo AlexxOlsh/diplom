@@ -23,7 +23,7 @@ from django.views.generic import TemplateView
 from film_app import settings
 from movies import views
 
-urlpatterns = [
+urlpatterns = ([
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api-auth/', include('rest_framework.urls')),
@@ -31,7 +31,8 @@ urlpatterns = [
     path("", include("movies.urls")),
     path("profile/", TemplateView.as_view(template_name="profile/user.html"), name="profile"),
     path("profile/favourites/", views.FavoritesListView.as_view(template_name="profile/favourites_list.html"), name="favorite"),
-]
+]) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
