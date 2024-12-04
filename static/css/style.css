@@ -686,6 +686,10 @@ span.product-new-top {
     margin-bottom: 120px;
 }
 /* Checkbox stars */
+.rating-block {
+    margin-top: 20px;
+
+}
 .rating {
     overflow: hidden;
     vertical-align: bottom;
@@ -729,6 +733,15 @@ span.product-new-top {
     pointer-events: none;
 }
 /* //Checkbox stars */
+#favorite-block {
+    margin-bottom: 10px;
+}
+#favorite-block button,
+#favorite-block button:focus,
+#favorite-block button:checked{
+    border: none;
+    background: transparent;
+}
 
 /*-- //New-Arrivals --*/
 
@@ -1025,7 +1038,10 @@ p.italic-blue {
 
 .movie-reviews {
     margin-bottom: 200px;
+}
 
+.movie-reviews h2 {
+    margin-bottom: 30px;
 }
 
 .comment-item {

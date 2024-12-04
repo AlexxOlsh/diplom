@@ -6,37 +6,73 @@
             <div class="card">
               <div class="row g-0">
                 <div class="col-md-4">
-                  <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
-                    {% if user.is_authenticated %}
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title">{{movie.title}}</h5>
+                      {% if user.is_authenticated %}
                           <div id="favorite-block">
                               <form action="{% url 'favourite' movie.url %}" method="post">
                                   {% csrf_token %}
                                   <input type="hidden" name="pk" value="{{ movie.pk }}">
                                   <button type="submit">
-                                    {% if is_favourite %}
-                                      <i class="fa fa-heart fa-lg"></i>
-                                    {% else %}
-                                      <i class="fa fa-heart-o fa-lg"></i>
-                                    {% endif %}
+
+                                        {% if is_favourite %}
+                                          <i class="fa fa-heart fa-lg"></i>
+                                        {% else %}
+                                          <i class="fa fa-heart-o fa-lg"></i>
+                                        {% endif %}
+
                                   </button>
                                 </form>
                           </div>
-                    {% endif %}
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                      <h5 class="card-title">{{movie.title}}</h5>
+                      {% endif %}
+                      <p class="card-text"><i>{{movie.tagline}}</i></p>
                       <p class="card-text">{{movie.description}}</p>
-                      <p class="card-text">{{movie.year}}</p>
-                      <div>{{movie.genres.all|join:", "}}</div>
-                       {% with rating_value=movie.rating|stringformat:'d' %}
-                           {% if user.is_authenticated %}
-                                  <form rate="{{rating_value}}" action="{% url 'add_rating' %}" method="post" name="rating">
-                                      <b>Рейтинг:</b>
-                                      {% csrf_token %}
-                                      <input type="hidden" name="movie" value="{{movie.id}}">
-                                      <input type="hidden" name="user" value="{{user.id}}">
+                      <div><p><b>Жанр:</b> {{movie.genres.all|join:", "}}</p></div>
+                      <div><p><b>Год:</b> {{movie.year}}</p></div>
+                      <p class="card-text"><b>Страна:</b> {{movie.country}}</p>
+                      <p class="card-text"><b>Режиссер:</b>
+                          {% for dir in movie.directors.all %}
+                            {{dir.name}}
+                          {% endfor %}
+                      </p>
+                      <p class="card-text"><b>Актеры:</b>
+                        {% for dir in movie.actors.all %}
+                            {{dir.name}}
+                          {% endfor %}
+                      </p>
+                      <p class="card-text"><b>Премьера в мире:</b> {{movie.world_premiere}}</p>
+                      <p class="card-text"><b>Бюджет:</b> ${{movie.budget}}</p>
+                      <p class="card-text"><b>Сборы в США:</b> ${{movie.fees_in_usa}}</p>
+                      <p class="card-text"><b>Сборы в мире:</b> ${{movie.fess_in_world}}</p>
 
+                       {% with rating_value=movie.rating|stringformat:'d' %}
+                            <div class="rating-block">
+                               {% if user.is_authenticated %}
+                                      <form rate="{{rating_value}}" action="{% url 'add_rating' %}" method="post" name="rating">
+                                          <b>Рейтинг:</b>
+                                          {% csrf_token %}
+                                          <input type="hidden" name="movie" value="{{movie.id}}">
+                                          <input type="hidden" name="user" value="{{user.id}}">
+
+                                          <span class="rating">
+                                              <input id="rating5" type="radio" name="star" value="5" {% if rating_value == '5' %} checked {% endif %}>
+                                              <label for="rating5" >5</label>
+                                              <input id="rating4" type="radio" name="star" value="4" {% if rating_value == '4' %} checked {% endif %}>
+                                              <label for="rating4" >4</label>
+                                              <input id="rating3" type="radio" name="star" value="3" {% if rating_value == '3' %} checked {% endif %}>
+                                              <label for="rating3">3</label>
+                                              <input id="rating2" type="radio" name="star" value="2" {% if rating_value == '2' %} checked {% endif %}>
+                                              <label for="rating2">2</label>
+                                              <input id="rating1" type="radio" name="star" value="1" {% if rating_value == '1' %} checked {% endif %}>
+                                              <label for="rating1">1</label>
+                                          </span>
+                                          <span class="editContent">{{ movie.rating|formatted_float:1 }}</span>
+                                      </form>
+                              {% else %}
+                                  <div class="no-vote">
                                       <span class="rating">
                                           <input id="rating5" type="radio" name="star" value="5" {% if rating_value == '5' %} checked {% endif %}>
                                           <label for="rating5" >5</label>
@@ -50,24 +86,9 @@
                                           <label for="rating1">1</label>
                                       </span>
                                       <span class="editContent">{{ movie.rating|formatted_float:1 }}</span>
-                                  </form>
-                          {% else %}
-                              <div class="no-vote">
-                                  <span class="rating">
-                                      <input id="rating5" type="radio" name="star" value="5" {% if rating_value == '5' %} checked {% endif %}>
-                                      <label for="rating5" >5</label>
-                                      <input id="rating4" type="radio" name="star" value="4" {% if rating_value == '4' %} checked {% endif %}>
-                                      <label for="rating4" >4</label>
-                                      <input id="rating3" type="radio" name="star" value="3" {% if rating_value == '3' %} checked {% endif %}>
-                                      <label for="rating3">3</label>
-                                      <input id="rating2" type="radio" name="star" value="2" {% if rating_value == '2' %} checked {% endif %}>
-                                      <label for="rating2">2</label>
-                                      <input id="rating1" type="radio" name="star" value="1" {% if rating_value == '1' %} checked {% endif %}>
-                                      <label for="rating1">1</label>
-                                  </span>
-                                  <span class="editContent">{{ movie.rating|formatted_float:1 }}</span>
-                              </div>
-                          {% endif %}
+                                  </div>
+                              {% endif %}
+                            </div>
                       {% endwith %}
                   </div>
                 </div>
@@ -84,7 +105,7 @@
                 </div>
             </div>
             <div class="movie-reviews">
-
+                <h2>Отзывы</h2>
                 <div class="movie-comments">
                     {% for review in movie.reviews_set.all %}
                     <div class="comment-item">
@@ -108,7 +129,7 @@
                         </div>
                         <div class="d-sm-flex">
 
-                            <button type="submit" class="mt-3 btn-success btn-block py-3">Отправить</button>
+                            <button type="submit" class="mt-3 btn btn-dark py-3">Отправить</button>
                         </div>
                     </form>
                 {% endif %}

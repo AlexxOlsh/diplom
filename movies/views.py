@@ -39,9 +39,10 @@ class MovieDetailView(GenreYear, DetailView):
 
         user = self.request.user
         movie = kwargs.get('object')
-
+        print(user)
         if user.id:
-            favorite_list, created = Favorites.objects.get_or_create(user=user.id)
+            favorite_list, created = Favorites.objects.get_or_create(user=user)
+
             if favorite_list.movies.filter(id=movie.pk).exists():
                 context['is_favourite'] = True
             else:
@@ -94,7 +95,7 @@ class AddReview(View):
             form = form.save(commit=False)
             form.movie_id = pk
             form.user = request.user
-            movie = Movie.objects.filter(pk=pk)
+            movie = Movie.objects.filter(id=pk).first()
             form.save()
         return HttpResponseRedirect(movie.get_absolute_url())
 
@@ -122,9 +123,9 @@ class AddStarRating(View):
             )
             film = Movie.objects.get(id=request.POST.get("movie"))
             new_rating = film.average_rating()
-            Movie.objects.update(
-                rating=new_rating
-            )
+            film.rating = new_rating
+            film.save()
+
             return HttpResponse(status=201)
         else:
             return HttpResponse(status=400)

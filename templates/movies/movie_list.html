@@ -13,13 +13,15 @@
                             {% for movie in movie_list %}
                                 <div class="col-4">
                                     <div class="card">
-                                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="card-img-top">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><a href="{{ movie.url }}/">{{ movie.title }}</a></h5>
-                                            <div>{{ movie.rating|floatformat:1 }}</div>
-                                            <div>{{movie.genres.all|join:", "}}</div>
-                                            <div>{{ movie.year }}</div>
-                                        </div>
+                                        <a href="/movies/{{ movie.url }}/">
+                                            <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="card-img-top">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ movie.title }}</h5>
+                                                <div>{{ movie.rating|floatformat:1 }}</div>
+                                                <div>{{movie.genres.all|join:", "}}</div>
+                                                <div>{{ movie.year }}</div>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             {% endfor %}

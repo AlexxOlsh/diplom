@@ -54,11 +54,11 @@ class Genre(models.Model):
 class Movie(models.Model):
     """Фильм"""
     title = models.CharField("Название", max_length=100)
-    tagline = models.CharField("Слоган", max_length=100, default='')
+    tagline = models.CharField("Слоган", max_length=200, default='')
     description = models.TextField("Описание")
     poster = models.ImageField("Постер", upload_to="movies/")
     year = models.PositiveSmallIntegerField("Дата выхода", default=2019)
-    country = models.CharField("Страна", max_length=30)
+    country = models.CharField("Страна", max_length=350)
     directors = models.ManyToManyField(Actor, verbose_name="режиссер", related_name="film_director")
     actors = models.ManyToManyField(Actor, verbose_name="актеры", related_name="film_actor")
     genres = models.ManyToManyField(Genre, verbose_name="жанры")
