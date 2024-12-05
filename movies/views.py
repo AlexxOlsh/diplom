@@ -39,7 +39,7 @@ class MovieDetailView(GenreYear, DetailView):
 
         user = self.request.user
         movie = kwargs.get('object')
-        print(user)
+
         if user.id:
             favorite_list, created = Favorites.objects.get_or_create(user=user)
 
