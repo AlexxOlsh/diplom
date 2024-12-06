@@ -9,6 +9,6 @@ RUN pip install --upgrade pip
 
 COPY ./req.txt /usr/src/app/
 
-RUN pip install -r req.txt
+RUN pip install -r requirements.txt
 
 COPY . /usr/src/app/

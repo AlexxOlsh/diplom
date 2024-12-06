@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from film_app import settings
+from films import settings
 from movies import views
 
 urlpatterns = ([
