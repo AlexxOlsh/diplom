@@ -1,5 +1,7 @@
 .idea
 .venv
-
+.env.dev
+.env.prod
+.env
 backups
 db.sqlite3
